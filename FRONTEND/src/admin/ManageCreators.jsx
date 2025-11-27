@@ -19,7 +19,7 @@ export default function ManageCreators() {
       const response = await axios.get(`${API_URL}/allcreators`);
       setCreators(response.data);
     } catch (err) {
-      setError("Failed to fetch creators... " + err.message);
+      setError("Failed to fetch creators: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -31,12 +31,14 @@ export default function ManageCreators() {
 
   // Delete creator
   const deleteCreator = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this creator?")) return;
+
     try {
       await axios.delete(`${API_URL}/deletecreator/${id}`);
-      setError(""); // Clear any previous errors
       displayCreators();
+      setError("");
     } catch (err) {
-      setError("Unexpected error... " + err.message);
+      setError("Error deleting creator: " + err.message);
     }
   };
 
@@ -60,71 +62,70 @@ export default function ManageCreators() {
 
   return (
     <div className="creator-container">
-      <h2 className="creator-title">Manage Creators</h2>
+      <h2>Manage Creators</h2>
 
-      {/* 🔍 Filters */}
+      {/* Filters */}
       <div className="filters">
         <input
-          placeholder="🔍 Search by name, email, username, mobile, location"
+          type="text"
+          placeholder="Search by name, email, username, mobile, location..."
           value={search}
-          onChange={(e) => setSearch(e.target.value.trimStart())}
+          onChange={(e) => setSearch(e.target.value)}
         />
-
-      <select
-  value={categoryFilter}
-  onChange={(e) => setCategoryFilter(e.target.value)}
->
-  <option>All</option>
-  <option>Startup</option>
-  <option>Charity</option>
-  <option>Sponsorship</option>
-  <option>Healthcare</option>
-</select>
+        <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+          <option>All</option>
+          <option>Startup</option>
+          <option>Charity</option>
+          <option>Sponsorship</option>
+          <option>Healthcare</option>
+        </select>
       </div>
 
-      {/* Table Rendering */}
-      {error ? (
-        <div className="table-error">{error}</div>
-      ) : loading ? (
-        <div className="table-loading">Loading creators...</div>
-      ) : filteredCreators.length === 0 ? (
-        <div className="table-empty">No Creator Data Found</div>
-      ) : (
-        <table className="creator-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Username</th>
-              <th>Mobile</th>
-              <th>Category</th>
-              <th>Location</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCreators.map((creator) => (
-              <tr key={creator.id}>
-                <td>{creator.id}</td>
-                <td>{creator.name}</td>
-                <td>{creator.email}</td>
-                <td>{creator.username}</td>
-                <td>{creator.mobileno}</td>
-                <td>{creator.category}</td>
-                <td>{creator.location}</td>
-                <td>
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteCreator(creator.id)}
-                  >
-                    <DeleteIcon /> Delete
-                  </button>
-                </td>
+      {/* Error/Loading/Empty States */}
+      {error && <div className="table-error">{error}</div>}
+      {loading && <div className="table-loading">Loading creators...</div>}
+      {!loading && filteredCreators.length === 0 && <div className="table-empty">No Creator Data Found</div>}
+
+      {/* Table */}
+      {filteredCreators.length > 0 && (
+        <div className="table-wrapper">
+          <table className="creator-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Mobile</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredCreators.map((creator) => (
+                <tr key={creator.id}>
+                  <td>{creator.id}</td>
+                  <td>{creator.name}</td>
+                  <td>{creator.email}</td>
+                  <td>{creator.username}</td>
+                  <td>{creator.mobileno}</td>
+                  <td>
+                    <span className={`badge category ${creator.category?.toLowerCase()}`}>
+                      {creator.category}
+                    </span>
+                  </td>
+                  <td>{creator.location}</td>
+                  <td>
+                    <button className="delete-btn" onClick={() => deleteCreator(creator.id)}>
+                      <DeleteIcon fontSize="small" /> Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

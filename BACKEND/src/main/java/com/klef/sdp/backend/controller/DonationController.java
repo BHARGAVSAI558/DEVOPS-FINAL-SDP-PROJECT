@@ -9,12 +9,13 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.ByteArrayOutputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -23,10 +24,8 @@ import java.util.List;
 @RequestMapping("/donation")
 @CrossOrigin("*")
 public class DonationController {
-
     @Autowired
     private DonationService donationService;
-
     @Autowired
     private DonationRepository donationRepository;
 
@@ -77,28 +76,14 @@ public class DonationController {
 
     // ✅ Download PDF receipt by donationId
     @GetMapping("/receipt/{donationId}")
+    @Transactional(readOnly = true) // Keeps transaction open for lazy loading
     public ResponseEntity<?> downloadReceipt(@PathVariable int donationId) {
         try {
             System.out.println(">>> [Receipt] requested for donationId = " + donationId);
-
-            // 🔍 DEBUG: print everything JPA sees
-            List<Donation> all = donationRepository.findAll();
-            System.out.println(">>> [Receipt] Total donations in DB (Spring): " + all.size());
-            for (Donation d : all) {
-                System.out.println("    - donation.id = " + d.getId()
-                        + ", donorId = " + (d.getDonor() != null ? d.getDonor().getId() : null)
-                        + ", campaignId = " + (d.getCampaign() != null ? d.getCampaign().getId() : null));
-            }
-
-            // find this donation in the list
-            Donation donation = all.stream()
-                    .filter(d -> d.getId() == donationId)
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Donation not found"));
-
+            Donation donation = donationService.getDonationById(donationId);
+            System.out.println(">>> [Receipt] Found donation: " + donation.getId() + ", donor: " + donation.getDonor().getName() + ", campaign: " + donation.getCampaign().getTitle());
             byte[] pdfBytes = generateDonationReceiptPdf(donation);
             String fileName = "donation_receipt_" + donation.getId() + ".pdf";
-
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                     .contentType(MediaType.APPLICATION_PDF)
@@ -115,66 +100,57 @@ public class DonationController {
     // Helper: build a simple receipt PDF using PDFBox
     private byte[] generateDonationReceiptPdf(Donation donation) throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
-
             try (PDPageContentStream content = new PDPageContentStream(document, page)) {
                 float margin = 60;
                 float y = 800;
-
                 // Title
+                PDType1Font titleFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
                 content.beginText();
-                content.setFont(PDType1Font.HELVETICA_BOLD, 22);
+                content.setFont(titleFont, 22);
                 content.newLineAtOffset(margin, y);
                 content.showText("Donation Receipt");
                 content.endText();
-
                 y -= 40;
-
                 DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
-
-                String donorName     = donation.getDonor().getName();
-                String donorEmail    = donation.getDonor().getEmail();
+                String donorName = donation.getDonor().getName();
+                String donorEmail = donation.getDonor().getEmail();
                 String campaignTitle = donation.getCampaign().getTitle();
-                String donationDate  = donation.getDonationDate().format(fmt);
-                String amount        = "₹" + donation.getAmount();
-                String message       = donation.getMessage() != null && !donation.getMessage().isBlank()
+                String donationDate = donation.getDonationDate().format(fmt);
+                String amount = "₹" + donation.getAmount();
+                String message = donation.getMessage() != null && !donation.getMessage().isBlank()
                         ? donation.getMessage()
                         : "-";
-
+                PDType1Font bodyFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
                 content.beginText();
-                content.setFont(PDType1Font.HELVETICA, 12);
+                content.setFont(bodyFont, 12);
                 content.newLineAtOffset(margin, y);
-
-                content.showText("Receipt ID   : " + donation.getId());
+                content.showText("Receipt ID : " + donation.getId());
                 content.newLineAtOffset(0, -18);
-                content.showText("Donor Name   : " + donorName);
+                content.showText("Donor Name : " + donorName);
                 content.newLineAtOffset(0, -18);
-                content.showText("Donor Email  : " + donorEmail);
+                content.showText("Donor Email : " + donorEmail);
                 content.newLineAtOffset(0, -18);
-                content.showText("Campaign     : " + campaignTitle);
+                content.showText("Campaign : " + campaignTitle);
                 content.newLineAtOffset(0, -18);
-                content.showText("Amount       : " + amount);
+                content.showText("Amount : " + amount);
                 content.newLineAtOffset(0, -18);
-                content.showText("Date & Time  : " + donationDate);
+                content.showText("Date & Time : " + donationDate);
                 content.newLineAtOffset(0, -18);
-                content.showText("Message      : " + message);
-
+                content.showText("Message : " + message);
                 content.endText();
-
                 // Footer thanks
+                PDType1Font footerFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA_OBLIQUE);
                 content.beginText();
-                content.setFont(PDType1Font.HELVETICA_OBLIQUE, 11);
+                content.setFont(footerFont, 11);
                 content.newLineAtOffset(margin, 120);
                 content.showText("Thank you for your generous contribution to HopeRaise.");
                 content.endText();
             }
-
             document.save(out);
         }
-
         return out.toByteArray();
     }
 }

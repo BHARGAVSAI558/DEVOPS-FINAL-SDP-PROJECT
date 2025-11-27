@@ -81,7 +81,7 @@ export default function ManageDonors() {
               <th>Username</th>
               <th>Mobile No</th>
               <th>Location</th>
-              <th>Action</th>
+             
             </tr>
           </thead>
           <tbody>
@@ -93,14 +93,7 @@ export default function ManageDonors() {
                 <td>{donor.username}</td>
                 <td>{donor.mobileno}</td>
                 <td>{donor.location}</td>
-                <td>
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteDonor(donor.id)}
-                  >
-                    <DeleteIcon /> Delete
-                  </button>
-                </td>
+                
               </tr>
             ))}
           </tbody>

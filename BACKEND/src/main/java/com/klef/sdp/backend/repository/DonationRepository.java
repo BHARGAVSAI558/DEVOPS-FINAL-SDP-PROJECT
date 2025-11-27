@@ -18,6 +18,5 @@ public interface DonationRepository extends JpaRepository<Donation, Integer> {
     @Query("select coalesce(sum(d.amount), 0) from Donation d where d.donor.id = :donorId")
     Double getTotalAmountByDonor(@Param("donorId") int donorId);
     
-    @Query("SELECT COALESCE(SUM(d.amount), 0) FROM Donation d")
-    long sumAllDonations();
+    
 }

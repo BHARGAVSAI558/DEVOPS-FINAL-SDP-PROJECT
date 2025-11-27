@@ -17,12 +17,11 @@ const getCurrentDonor = () => {
 function TransactionHistory() {
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState("");
-
   const [actionMessage, setActionMessage] = useState("");
   const [actionType, setActionType] = useState(""); // "success" | "error"
 
   useEffect(() => {
-    const load = async () => {
+    const loadTransactions = async () => {
       const donor = getCurrentDonor();
       if (!donor) {
         setError("Please log in to view your transaction history.");
@@ -33,12 +32,12 @@ function TransactionHistory() {
         const res = await axios.get(`${DONATION_API}/by-donor/${donor.id}`);
         setTransactions(res.data || []);
         setError("");
-      } catch (e) {
+      } catch (err) {
         setError("Failed to load transaction history.");
       }
     };
 
-    load();
+    loadTransactions();
   }, []);
 
   const downloadReceipt = async (donationId) => {
@@ -46,13 +45,9 @@ function TransactionHistory() {
     setActionType("");
 
     try {
-      // ✅ URL now matches backend exactly
-      const res = await axios.get(
-        `${DONATION_API}/receipt/${donationId}`,
-        {
-          responseType: "blob", // expecting PDF
-        }
-      );
+      const res = await axios.get(`${DONATION_API}/receipt/${donationId}`, {
+        responseType: "blob",
+      });
 
       const blob = new Blob([res.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
@@ -110,7 +105,7 @@ function TransactionHistory() {
 
       {error && <p className="tx-error">{error}</p>}
 
-      {(!transactions || transactions.length === 0) && !error ? (
+      {!transactions.length && !error ? (
         <p className="tx-empty">You have not donated yet.</p>
       ) : (
         <div className="tx-grid">
@@ -142,7 +137,7 @@ function TransactionHistory() {
                 <div className="tx-row">
                   <span className="tx-label">Message</span>
                   <span className="tx-value">
-                    {t.message && t.message.trim() !== "" ? t.message : "—"}
+                    {t.message?.trim() || "—"}
                   </span>
                 </div>
               </div>

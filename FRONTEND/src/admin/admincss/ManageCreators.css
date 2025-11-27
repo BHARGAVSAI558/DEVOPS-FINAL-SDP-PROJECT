@@ -1,17 +1,14 @@
-/* ================================
-   Admin ManageCreators Table Styles (Matching Creator Design)
-   ================================ */
-
+/* Container */
 .creator-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 30px;
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f8f9fa;
-  min-height: calc(100vh - 140px);
+  font-family: 'Inter', sans-serif;
+  background: #f4f6f8;
+  min-height: 100vh;
+  animation: fadeIn 0.6s ease-out;
 }
 
-/* Heading */
 .creator-container h2 {
   text-align: center;
   font-size: 2.5rem;
@@ -19,7 +16,7 @@
   margin-bottom: 40px;
   font-weight: 700;
   position: relative;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 }
 
 .creator-container h2::after {
@@ -28,7 +25,7 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
+  width: 60px;
   height: 4px;
   background: linear-gradient(90deg, #3282B8, #0F4C75);
   border-radius: 2px;
@@ -38,27 +35,20 @@
 .filters {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
   margin-bottom: 30px;
   flex-wrap: wrap;
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .filters input,
 .filters select {
-  padding: 12px 16px;
+  padding: 10px 14px;
   border: 2px solid #e5e7eb;
   border-radius: 12px;
   font-size: 1rem;
   outline: none;
   background: #ffffff;
   transition: all 0.3s ease;
-  flex: 1;
-  min-width: 200px;
-  color: #374151;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .filters input::placeholder {
@@ -69,269 +59,115 @@
 .filters input:focus,
 .filters select:focus {
   border-color: #3282B8;
-  box-shadow: 0 0 0 3px rgba(50, 130, 184, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 0 0 3px rgba(50, 130, 184, 0.15);
 }
 
-/* Error Message */
+/* Error/Loading/Empty */
 .table-error {
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-  color: #dc2626;
-  padding: 15px 20px;
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 12px 20px;
   border-radius: 12px;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-weight: 600;
-  border: 1px solid #fecaca;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
 }
 
-/* Loading Message */
 .table-loading {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  background: #dbeafe;
   color: #1e40af;
-  padding: 15px 20px;
+  padding: 12px 20px;
   border-radius: 12px;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-weight: 600;
-  border: 1px solid #bfdbfe;
-  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.1);
 }
 
-/* Empty State */
 .table-empty {
   text-align: center;
   color: #6b7280;
-  font-size: 1.1rem;
+  font-size: 1rem;
   padding: 40px;
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  margin: 20px 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* Table Container */
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+}
+
 .creator-table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Ensures equal column widths */
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
-.creator-table thead th {
-  background: #3282B8; /* Single blue color for heading */
-  color: #ffffff;
-  padding: 16px 12px;
+.creator-table th, .creator-table td {
   text-align: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #0F4C75;
-}
-
-/* Column Widths for equal distribution */
-.creator-table thead th:nth-child(1) { width: 8%; }  /* ID */
-.creator-table thead th:nth-child(2) { width: 16%; } /* Name */
-.creator-table thead th:nth-child(3) { width: 20%; } /* Email */
-.creator-table thead th:nth-child(4) { width: 14%; } /* Username */
-.creator-table thead th:nth-child(5) { width: 12%; } /* Mobile */
-.creator-table thead th:nth-child(6) { width: 12%; } /* Category */
-.creator-table thead th:nth-child(7) { width: 10%; } /* Location */
-.creator-table thead th:nth-child(8) { width: 8%; }  /* Action */
-
-.creator-table tbody tr {
+  padding: 12px 10px;
+  font-size: 0.95rem;
   border-bottom: 1px solid #e5e7eb;
-  height: 80px; /* Consistent row height */
 }
 
-.creator-table tbody tr:nth-child(even) {
-  background: #f8f9fa; /* Alternating row color */
+.creator-table th {
+  background: #3282B8;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .creator-table tbody tr:hover {
-  background: #e3f2fd; /* Simple hover effect */
+  background: #e3f2fd;
+  transform: scale(1.01);
+  transition: all 0.2s ease;
 }
 
-.creator-table tbody td {
-  padding: 12px;
-  vertical-align: middle;
-  color: #374151;
-  font-size: 0.9rem;
-  text-align: center;
-  border-right: 1px solid #e5e7eb; /* Borders between columns */
-}
-
-.creator-table tbody td:last-child {
-  border-right: none; /* No border on the last column */
-}
-
-/* Name Styling */
-.creator-table tbody td:nth-child(2) {
-  text-align: left;
-  font-weight: 600;
-  color: #0F4C75;
-}
-
-/* Email Styling */
-.creator-table tbody td:nth-child(3) {
-  text-align: left;
-  color: #6b7280;
-  font-size: 0.85rem;
-}
-
-/* Username Styling */
-.creator-table tbody td:nth-child(4) {
-  font-weight: 500;
-  color: #374151;
-}
-
-/* Mobile Styling */
-.creator-table tbody td:nth-child(5) {
-  font-weight: 500;
-  color: #374151;
-}
-
-/* Category Badges */
-.creator-table tbody td:nth-child(6) {
-  font-weight: 600;
-}
-
+/* Badges */
 .badge {
-  display: inline-block;
-  padding: 4px 8px;
+  padding: 4px 10px;
   border-radius: 12px;
-  background: #e0f2fe;
-  color: #0277bd;
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-transform: capitalize;
 }
 
-.badge.category.startup {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.badge.category.charity {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.badge.category.sponsorship {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-
-.badge.category.healthcare {
-  background: #fce7f3;
-  color: #be185d;
-}
-
-/* Location Styling */
-.creator-table tbody td:nth-child(7) {
-  color: #6b7280;
-  font-size: 0.85rem;
-}
+.badge.startup { background: #dcfce7; color: #166534; }
+.badge.charity { background: #fef3c7; color: #92400e; }
+.badge.sponsorship { background: #e0e7ff; color: #3730a3; }
+.badge.healthcare { background: #fce7f3; color: #be185d; }
 
 /* Delete Button */
 .delete-btn {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
   border: none;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.8rem;
-  font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .delete-btn:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  box-shadow: 0 4px 12px rgba(220,38,38,0.3);
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .creator-table {
-    overflow-x: auto;
-  }
-  
-  .creator-table {
-    min-width: 1000px; /* Ensure table is scrollable on smaller screens */
-  }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-  .creator-container {
-    padding: 20px 15px;
-  }
-
-  .creator-container h2 {
-    font-size: 2rem;
-    margin-bottom: 30px;
-  }
-
-  .filters {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .filters input,
-  .filters select {
-    min-width: 100%;
-  }
-
-  .creator-table thead th {
-    padding: 15px 12px;
-    font-size: 0.85rem;
-  }
-
-  .creator-table tbody td {
-    padding: 15px 12px;
-    font-size: 0.9rem;
-  }
+  .creator-table th, .creator-table td { font-size: 0.85rem; padding: 10px 8px; }
+  .filters { flex-direction: column; gap: 12px; }
 }
 
-@media (max-width: 480px) {
-  .creator-container {
-    padding: 15px 10px;
-  }
-
-  .creator-container h2 {
-    font-size: 1.8rem;
-  }
-
-  .creator-table thead th,
-  .creator-table tbody td {
-    padding: 12px 8px;
-  }
-}
-
-/* Animation for page load */
-.creator-container {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
