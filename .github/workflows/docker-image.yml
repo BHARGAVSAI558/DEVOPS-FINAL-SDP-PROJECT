@@ -32,7 +32,7 @@ jobs:
           context: ./BACKEND
           file: ./BACKEND/backend.Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/projectsem-project2-backend:second
+          tags: ${{ secrets.DOCKER_USERNAME }}/projectsem-project2-backend:third1
 
       # Step 5 — Build & Push Frontend Image
       - name: Build and Push Frontend Image
@@ -41,4 +41,4 @@ jobs:
           context: ./FRONTEND
           file: ./FRONTEND/frontend.Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/projectsem-project2-frontend:second
+          tags: ${{ secrets.DOCKER_USERNAME }}/projectsem-project2-frontend:third1
