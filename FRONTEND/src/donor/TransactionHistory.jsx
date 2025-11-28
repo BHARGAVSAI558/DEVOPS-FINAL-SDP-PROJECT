@@ -17,8 +17,10 @@ const getCurrentDonor = () => {
 function TransactionHistory() {
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState("");
-  const [actionMessage, setActionMessage] = useState("");
-  const [actionType, setActionType] = useState(""); // "success" | "error"
+
+  // NEW – modal state
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTx, setSelectedTx] = useState(null);
 
   useEffect(() => {
     const loadTransactions = async () => {
@@ -40,43 +42,6 @@ function TransactionHistory() {
     loadTransactions();
   }, []);
 
-  const downloadReceipt = async (donationId) => {
-    setActionMessage("");
-    setActionType("");
-
-    try {
-      const res = await axios.get(`${DONATION_API}/receipt/${donationId}`, {
-        responseType: "blob",
-      });
-
-      const blob = new Blob([res.data], { type: "application/pdf" });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `donation_receipt_${donationId}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-
-      setActionType("success");
-      setActionMessage("Receipt downloaded successfully.");
-    } catch (err) {
-      let msg = "Failed to download receipt. Please try again.";
-
-      if (err.response) {
-        if (err.response.status === 404) {
-          msg = "Receipt not available for this donation (Donation not found).";
-        } else if (err.response.status === 500) {
-          msg = "Server error while generating receipt.";
-        }
-      }
-
-      setActionType("error");
-      setActionMessage(msg);
-    }
-  };
-
   const formatDateTime = (dtString) => {
     if (!dtString) return "—";
     try {
@@ -87,21 +52,21 @@ function TransactionHistory() {
     }
   };
 
+  // Open modal
+  const handleView = (tx) => {
+    setSelectedTx(tx);
+    setShowModal(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setSelectedTx(null);
+    setShowModal(false);
+  };
+
   return (
     <div className="tx-container">
       <h2 className="tx-heading">Transaction History</h2>
-
-      {actionMessage && (
-        <p
-          className={
-            actionType === "success"
-              ? "tx-banner tx-banner-success"
-              : "tx-banner tx-banner-error"
-          }
-        >
-          {actionMessage}
-        </p>
-      )}
 
       {error && <p className="tx-error">{error}</p>}
 
@@ -114,7 +79,7 @@ function TransactionHistory() {
               <div className="tx-card-header">
                 <div>
                   <div className="tx-campaign-title">
-                    {t.campaign?.title || t.campaign?.id || "Campaign"}
+                    {t.campaign?.title || "Campaign"}
                   </div>
                   <div className="tx-campaign-category">
                     {t.campaign?.category || "General"}
@@ -136,22 +101,66 @@ function TransactionHistory() {
                 </div>
                 <div className="tx-row">
                   <span className="tx-label">Message</span>
-                  <span className="tx-value">
-                    {t.message?.trim() || "—"}
-                  </span>
+                  <span className="tx-value">{t.message || "—"}</span>
                 </div>
               </div>
 
               <div className="tx-footer">
                 <button
                   className="tx-receipt-btn"
-                  onClick={() => downloadReceipt(t.id)}
+                  onClick={() => handleView(t)}
                 >
-                  Download Receipt
+                  View
                 </button>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* ===========================
+             VIEW MODAL
+      ============================ */}
+      {showModal && selectedTx && (
+        <div className="modal-backdrop">
+          <div className="modal-card">
+            <div className="modal-header">
+              <h3>Donation Details</h3>
+              <button className="modal-close" onClick={closeModal}>✕</button>
+            </div>
+
+            <div className="modal-body">
+              <p className="modal-info">
+                <strong>Campaign:</strong> {selectedTx.campaign?.title}
+              </p>
+
+              <p className="modal-info">
+                <strong>Category:</strong> {selectedTx.campaign?.category}
+              </p>
+
+              <p className="modal-info">
+                <strong>Amount:</strong> ₹{selectedTx.amount}
+              </p>
+
+              <p className="modal-info">
+                <strong>Donation ID:</strong> #{selectedTx.id}
+              </p>
+
+              <p className="modal-info">
+                <strong>Date:</strong> {formatDateTime(selectedTx.donationDate)}
+              </p>
+
+              <p className="modal-info">
+                <strong>Message:</strong> {selectedTx.message || "—"}
+              </p>
+
+              <div className="modal-actions">
+                <button className="modal-btn primary" onClick={closeModal}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

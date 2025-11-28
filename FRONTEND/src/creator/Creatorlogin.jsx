@@ -88,10 +88,7 @@ export default function CreatorLogin() {
         </form>
 
         <div className="signup-section">
-          <p>New to FundConnect?</p>
-          <Link to="/creator/register" className="signup-button">
-            Register as Creator
-          </Link>
+          
           <p>Contact admin team for platform access</p>
         </div>
       </div>

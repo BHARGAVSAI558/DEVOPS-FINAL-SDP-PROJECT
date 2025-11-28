@@ -9,7 +9,7 @@ import DonorLogin from "./../donor/DonorLogin";
 import DonorRegistration from "./../donor/DonorRegistration";
 import AdminLogin from "../admin/AdminLogin";
 import CreatorLogin from "../creator/Creatorlogin";
-import CreatorRegistration from "../creator/CreatorRegistration";
+
 
 // Assets
 import logo from "../assets/logo1.png";
@@ -98,7 +98,7 @@ export default function MainNavBar() {
         <Route path="/donor/login" element={<DonorLogin />} />
         <Route path="/donor/registration" element={<DonorRegistration />} />
         <Route path="/creator/login" element={<CreatorLogin />} />
-        <Route path="/creator/register" element={<CreatorRegistration />} />  
+       
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import "./admincss/ManageCampaigns.css";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/admin`;
@@ -63,7 +63,7 @@ export default function ManageCampaigns() {
 
   return (
     <div className="campaign-container">
-      <h2 className="campaign-title">Manage Campaigns</h2>
+      <h2 className="campaign-title">All Campaigns </h2>
 
       {/* 🔍 Filters */}
       <div className="filters">
@@ -114,7 +114,7 @@ export default function ManageCampaigns() {
                 <th>Collected</th>
                 <th>Status</th>
                 <th>Creator</th>
-                <th>Action</th>
+              
               </tr>
             </thead>
             <tbody>
@@ -127,14 +127,7 @@ export default function ManageCampaigns() {
                   <td>₹{campaign.collectedAmount}</td>
                   <td>{campaign.status}</td>
                   <td>{campaign.creator?.name || "—"}</td>
-                  <td>
-                    <button
-                      className="delete-btn"
-                      onClick={() => deleteCampaign(campaign.id)}
-                    >
-                      <DeleteIcon /> Delete
-                    </button>
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>

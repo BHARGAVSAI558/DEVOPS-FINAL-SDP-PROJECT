@@ -12,6 +12,10 @@ export default function ManageCreators() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Modal states
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
   // Fetch creators
   const displayCreators = async () => {
     setLoading(true);
@@ -30,19 +34,23 @@ export default function ManageCreators() {
   }, []);
 
   // Delete creator
-  const deleteCreator = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this creator?")) return;
+  const confirmDelete = (id) => {
+    setSelectedId(id);
+    setShowModal(true);
+  };
 
+  const deleteCreator = async () => {
     try {
-      await axios.delete(`${API_URL}/deletecreator/${id}`);
+      await axios.delete(`${API_URL}/deletecreator/${selectedId}`);
       displayCreators();
+      setShowModal(false);
       setError("");
     } catch (err) {
       setError("Error deleting creator: " + err.message);
     }
   };
 
-  // Filter creators by search + category
+  // Search + Category Filter
   const filteredCreators = creators.filter((c) => {
     const query = search.toLowerCase();
 
@@ -64,7 +72,6 @@ export default function ManageCreators() {
     <div className="creator-container">
       <h2>Manage Creators</h2>
 
-      {/* Filters */}
       <div className="filters">
         <input
           type="text"
@@ -72,7 +79,11 @@ export default function ManageCreators() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
           <option>All</option>
           <option>Startup</option>
           <option>Charity</option>
@@ -81,12 +92,12 @@ export default function ManageCreators() {
         </select>
       </div>
 
-      {/* Error/Loading/Empty States */}
       {error && <div className="table-error">{error}</div>}
       {loading && <div className="table-loading">Loading creators...</div>}
-      {!loading && filteredCreators.length === 0 && <div className="table-empty">No Creator Data Found</div>}
+      {!loading && filteredCreators.length === 0 && (
+        <div className="table-empty">No Creator Data Found</div>
+      )}
 
-      {/* Table */}
       {filteredCreators.length > 0 && (
         <div className="table-wrapper">
           <table className="creator-table">
@@ -102,6 +113,7 @@ export default function ManageCreators() {
                 <th>Action</th>
               </tr>
             </thead>
+
             <tbody>
               {filteredCreators.map((creator) => (
                 <tr key={creator.id}>
@@ -111,13 +123,19 @@ export default function ManageCreators() {
                   <td>{creator.username}</td>
                   <td>{creator.mobileno}</td>
                   <td>
-                    <span className={`badge category ${creator.category?.toLowerCase()}`}>
+                    <span
+                      className={`badge category ${creator.category?.toLowerCase()}`}
+                    >
                       {creator.category}
                     </span>
                   </td>
                   <td>{creator.location}</td>
+
                   <td>
-                    <button className="delete-btn" onClick={() => deleteCreator(creator.id)}>
+                    <button
+                      className="delete-btn"
+                      onClick={() => confirmDelete(creator.id)}
+                    >
                       <DeleteIcon fontSize="small" /> Delete
                     </button>
                   </td>
@@ -125,6 +143,29 @@ export default function ManageCreators() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>Confirm Delete</h3>
+            <p>Are you sure you want to delete this creator?</p>
+
+            <div className="modal-actions">
+              <button className="modal-btn delete" onClick={deleteCreator}>
+                Yes, Delete
+              </button>
+
+              <button
+                className="modal-btn cancel"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

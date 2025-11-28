@@ -8,7 +8,7 @@ import AdminDashboard from "./AdminDashboard";
 import ManageCampaigns from "./ManageCampaigns";
 import ManageDonors from "./ManageDonors";
 import ManageCreators from "./ManageCreators";
-import FundTracking from "./FundTracking";
+// import FundTracking from "./FundTracking";
 import ReportsAndAnalytics from "./ReportsAndAnalytics";
 import AddCreator from "./AddCreator";
 
@@ -69,11 +69,11 @@ export default function AdminNavBar() {
               Add Creator
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink to="/admin/funds" onClick={() => setIsMenuOpen(false)}>
               Funds
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink to="/admin/reports" onClick={() => setIsMenuOpen(false)}>
               Reports
@@ -100,7 +100,7 @@ export default function AdminNavBar() {
           <Route path="/admin/manage-donors" element={<ManageDonors />} />
           <Route path="/admin/manage-creators" element={<ManageCreators />} />
           <Route path="/admin/add-creator" element={<AddCreator />} />
-          <Route path="/admin/funds" element={<FundTracking />} />
+          {/* <Route path="/admin/funds" element={<FundTracking />} /> */}
           <Route path="/admin/reports" element={<ReportsAndAnalytics />} />
         </Routes>
       </main>

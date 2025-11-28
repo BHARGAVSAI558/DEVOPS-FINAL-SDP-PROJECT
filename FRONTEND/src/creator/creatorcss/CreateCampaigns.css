@@ -1,5 +1,5 @@
 /* ================================
-   Modern CreateCampaigns Styles
+   Clean Modern CreateCampaigns Styles
    ================================ */
 
 .campaign-container {
@@ -7,91 +7,50 @@
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 140px);
-  background: #f8f9fa;
+  background: #f4f6f8;
   padding: 30px 20px;
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .campaign-form {
   background: #ffffff;
-  padding: 40px;
-  border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  border-radius: 18px;
   width: 100%;
   max-width: 600px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s ease;
-}
-
-.campaign-form::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #3282B8, #0F4C75);
-}
-
-.campaign-form:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
 }
 
 .campaign-form h2 {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 28px;
   color: #0F4C75;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 700;
-  position: relative;
-  padding-bottom: 15px;
 }
 
-.campaign-form h2::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #3282B8, #0F4C75);
-  border-radius: 2px;
-}
-
-/* Form Labels */
+/* Labels */
 .campaign-form label {
   display: block;
   font-weight: 600;
-  margin: 20px 0 8px;
+  margin: 18px 0 6px;
   color: #374151;
   font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: color 0.3s ease;
 }
 
-.campaign-form label:hover {
-  color: #0F4C75;
-}
-
-/* Form Inputs */
+/* Inputs */
 .campaign-form input,
 .campaign-form textarea,
 .campaign-form select {
   width: 100%;
-  padding: 16px 20px;
-  margin-bottom: 20px;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 1.7px solid #cdd3d8;
+  border-radius: 10px;
   font-size: 1rem;
   font-family: inherit;
   background: #ffffff;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.25s ease;
 }
 
 .campaign-form input:focus,
@@ -99,245 +58,103 @@
 .campaign-form select:focus {
   border-color: #3282B8;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(50, 130, 184, 0.1);
-  transform: translateY(-2px);
-  background: #f8f9ff;
-}
-
-.campaign-form input:hover,
-.campaign-form textarea:hover,
-.campaign-form select:hover {
-  border-color: #3282B8;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(50, 130, 184, 0.1);
+  background: #fdfdfd;
 }
 
 .campaign-form textarea {
   resize: vertical;
-  min-height: 120px;
-  line-height: 1.6;
+  min-height: 110px;
 }
 
-.campaign-form select {
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 12px center;
-  background-repeat: no-repeat;
-  background-size: 16px;
-  padding-right: 40px;
-}
-
-/* File Input Styling */
+/* File Input */
 .campaign-form input[type="file"] {
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-  border: 2px dashed #3282B8;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  padding: 10px;
+  border: 1.7px dashed #3282B8;
+  background: #fafbfc;
 }
 
-.campaign-form input[type="file"]:hover {
-  background: linear-gradient(135deg, #e3f2fd 0%, #f8f9ff 100%);
-  border-color: #0F4C75;
-  transform: translateY(-2px);
-}
-
-.campaign-form input[type="file"]:focus {
-  border-style: solid;
-  background: #f8f9ff;
-}
-
-/* Image Preview */
+/* Image preview */
 .campaign-form img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 20px;
-  border: 2px solid #e5e7eb;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.campaign-form img:hover {
-  transform: scale(1.02);
-  border-color: #3282B8;
-  box-shadow: 0 12px 35px rgba(50, 130, 184, 0.2);
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  margin-bottom: 16px;
 }
 
 /* Submit Button */
 .campaign-form button {
   width: 100%;
-  padding: 18px 24px;
-  background: linear-gradient(135deg, #3282B8 0%, #0F4C75 100%);
+  padding: 16px;
+  background: #0F4C75;
   color: #ffffff;
   border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 8px 25px rgba(50, 130, 184, 0.3);
-}
-
-.campaign-form button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.campaign-form button:hover::before {
-  left: 100%;
+  transition: background 0.25s ease;
 }
 
 .campaign-form button:hover {
-  background: linear-gradient(135deg, #0F4C75 0%, #3282B8 100%);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(50, 130, 184, 0.4);
+  background: #0c3a5b;
 }
 
-.campaign-form button:active {
-  transform: translateY(-1px);
+.campaign-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Messages */
 .success-message {
-  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  background: #dcfce7;
   color: #166534;
-  padding: 15px 20px;
-  border-radius: 12px;
-  text-align: center;
-  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
   font-weight: 600;
   border: 1px solid #bbf7d0;
-  box-shadow: 0 4px 15px rgba(22, 101, 52, 0.1);
-  animation: slideInDown 0.5s ease-out;
 }
 
 .error-message {
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-  color: #dc2626;
-  padding: 15px 20px;
-  border-radius: 12px;
-  text-align: center;
-  margin-bottom: 20px;
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
   font-weight: 600;
   border: 1px solid #fecaca;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
-  animation: slideInDown 0.5s ease-out;
 }
 
-@keyframes slideInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive Design */
+/* Mobile Responsive */
 @media (max-width: 768px) {
-  .campaign-container {
-    padding: 20px 15px;
-    min-height: calc(100vh - 120px);
-  }
-
   .campaign-form {
-    padding: 30px 25px;
-    border-radius: 20px;
+    padding: 24px;
   }
 
   .campaign-form h2 {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-  }
-
-  .campaign-form input,
-  .campaign-form textarea,
-  .campaign-form select {
-    padding: 14px 18px;
-    margin-bottom: 18px;
+    font-size: 1.7rem;
   }
 
   .campaign-form button {
-    padding: 16px 20px;
-    font-size: 1rem;
-  }
-
-  .campaign-form img {
-    height: 180px;
+    padding: 14px;
   }
 }
 
 @media (max-width: 480px) {
-  .campaign-container {
-    padding: 15px 10px;
-  }
-
   .campaign-form {
-    padding: 25px 20px;
-    border-radius: 16px;
+    padding: 20px;
+    border-radius: 14px;
   }
 
   .campaign-form h2 {
-    font-size: 1.6rem;
-    margin-bottom: 25px;
+    font-size: 1.5rem;
   }
 
   .campaign-form input,
   .campaign-form textarea,
   .campaign-form select {
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    font-size: 0.95rem;
+    padding: 12px;
   }
-
-  .campaign-form button {
-    padding: 14px 18px;
-    font-size: 0.95rem;
-  }
-
-  .campaign-form img {
-    height: 160px;
-  }
-}
-
-/* Animation for page load */
-.campaign-form {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Loading state for button */
-.campaign-form button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.campaign-form button:disabled:hover {
-  transform: none;
-  box-shadow: 0 8px 25px rgba(50, 130, 184, 0.3);
 }

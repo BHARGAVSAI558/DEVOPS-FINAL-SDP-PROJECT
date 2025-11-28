@@ -3,7 +3,7 @@ import { FiUser, FiLock } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contextapi/AuthContext";
-import image from "../assets/hms3.png";
+import image from "../assets/cfr.png";
 import "./admincss/AdminLogin.css";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/admin`;
