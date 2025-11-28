@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: bhargavsai558/endsem-project2-backend:first1  # <-- change this
+          image: bhargavsai558/projectsem-project2-backend:second  # <-- change this
           ports:
             - containerPort: 2123
 ---
@@ -110,7 +110,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: bhargavsai558/endsem-project2-frontend:first1  # <-- change this
+          image: bhargavsai558/projectsem-project2-frontend:second  # <-- change this
           ports:
             - containerPort: 80
 ---
